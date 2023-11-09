@@ -1,0 +1,46 @@
+<!-- Barra de navegación -->
+<nav>
+  <ul>
+    <li><a href="{% url 'loginUser' %}">Inicio de Sesión</a></li>
+    <li><a href="{% url 'signUpAdmin' %}">Crear Administrador</a></li>
+  </ul>
+</nav>
+
+<!-- Contenido de la vista -->
+<!-- Por defecto, mostrar la vista loginUser -->
+<form id="miFormulario" action="{% url 'loginUser' %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Signin</button>
+</form>
+
+<!-- Segundo formulario oculto para signUpAdmin -->
+<form id="crearAdminFormulario" action="{% url 'signUpAdmin' %}" method="POST" style="display: none;">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Crear Administrador</button>
+</form>
+
+{% block script %}
+<script>
+  // Obtener referencias a los formularios
+  const formLogin = document.getElementById('miFormulario');
+  const formCrearAdmin = document.getElementById('crearAdminFormulario');
+
+  // Mostrar la vista loginUser por defecto
+  formLogin.style.display = 'block';
+  formCrearAdmin.style.display = 'none';
+
+  // Agregar evento al enlace "Inicio de Sesión"
+  document.querySelector('nav a[href="{% url 'loginUser' %}"]').addEventListener('click', function() {
+    formLogin.style.display = 'block';
+    formCrearAdmin.style.display = 'none';
+  });
+
+  // Agregar evento al enlace "Crear Administrador"
+  document.querySelector('nav a[href="{% url 'signUpAdmin' %}"]').addEventListener('click', function() {
+    formLogin.style.display = 'none';
+    formCrearAdmin.style.display = 'block';
+  });
+</script>
+{% endblock %}
